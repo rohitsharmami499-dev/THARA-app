@@ -36,11 +36,12 @@ jobs:
         pip install --upgrade cython==0.29.33
         pip install buildozer
 
-    - name: Accept Licenses & Prepare SDK Environment
+    - name: Accept Licenses & Install Build Tools Explicitly
       run: |
         mkdir -p ~/.android
         touch ~/.android/repositories.cfg
         yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "build-tools;33.0.2" "platforms;android-33" "platform-tools"
 
     - name: Build APK with Buildozer
       env:
