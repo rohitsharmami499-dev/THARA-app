@@ -50,7 +50,8 @@ jobs:
         mkdir -p ~/.android
         touch ~/.android/repositories.cfg
         mkdir -p ~/.buildozer/android/platform/android-sdk/licenses
-        printf "24333f8a637bba5aea4e50d45143093725f78a08\n89330172875f1086c15659006811741730d033b9\nd56f5185047cc741e80386829e0c093a49286d5f" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
+        printf "24333f8a637bba5aea4e50d45143093725f78a08\n89330172875f1086c15659006811741730d033b9\nd56f5185047cc741e80386829e0c093a49286d5f\n2473126251d8e0a9a300109d7328d5420d4f3a74" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
+        printf "84831b9409646a918e30573bab4c9c91346d8abd" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-preview-license
 
     - name: Build APK with Buildozer
       run: |
