@@ -6,13 +6,13 @@ title = Jungle Friends
 # (str) Package name
 package.name = junglefriends
 
-# (str) Package domain (needed for android/ios packaging)
+# (str) Package domain
 package.domain = org.thara
 
 # (str) Source code where the main.py live
 source.dir = .
 
-# (list) Source files to include (let empty to include all the files)
+# (list) Source files to include
 source.include_exts = py,png,jpg,kv,atlas
 
 # (list) List of inclusions using pattern matching
@@ -24,7 +24,7 @@ version = 1.0
 # (list) Application requirements
 requirements = python3,kivy
 
-# (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
+# (str) Supported orientation
 orientation = portrait
 
 # (bool) Indicate if the application should be fullscreen or not
@@ -40,18 +40,24 @@ android.api = 33
 android.minapi = 21
 
 # (int) Android SDK version to use
-android.sdk = 30
+android.sdk = 33
 
 # (str) Android NDK version to use
 android.ndk = 25b
+
+# (str) Android build tools version to use (Stable version)
+android.build_tools_version = 33.0.2
+
+# (bool) Automatically accept SDK licenses
+android.accept_sdk_licenses = True
 
 # (list) List of architectures to build for
 android.archs = arm64-v8a,armeabi-v7a
 
 [buildozer]
 
-# (int) Log level (0 = error only, 1 = info, 2 = debug (with command output))
+# (int) Log level
 log_level = 2
 
-# (int) Display warning if buildozer is run as root (0 = false, 1 = true)
+# (int) Display warning if buildozer is run as root
 warn_on_root = 1
