@@ -36,22 +36,11 @@ jobs:
         pip install --upgrade cython==0.29.33
         pip install buildozer
 
-    - name: Pre-setup Android Command-Line Tools
+    - name: Accept Android SDK Licenses
       run: |
-        mkdir -p ~/.buildozer/android/platform/android-sdk/tools/bin
-        mkdir -p ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin
-        
-        # Download Android Command Line Tools
-        wget -q https://dl.google.com/android/repository/commandlinetools-linux-9441235_latest.zip -O commandlinetools.zip
-        unzip -q commandlinetools.zip
-        
-        # Structure directories so Buildozer finds sdkmanager in both old and new paths
-        mkdir -p ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest
-        cp -r cmdline-tools/* ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest/
-        cp -r cmdline-tools/bin/* ~/.buildozer/android/platform/android-sdk/tools/bin/ || true
-        
-        # Pre-accept all licenses
-        yes | ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --sdk_root=/home/runner/.buildozer/android/platform/android-sdk --licenses || true
+        mkdir -p ~/.android
+        touch ~/.android/repositories.cfg
+        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
     - name: Build APK with Buildozer
       run: |
