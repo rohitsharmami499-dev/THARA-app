@@ -36,20 +36,16 @@ jobs:
         pip install --upgrade cython==0.29.33
         pip install buildozer
 
-    - name: Setup Android SDK Environment for Buildozer
+    - name: Accept Licenses & Prepare SDK Environment
       run: |
-        # Create expected Buildozer target directories
-        mkdir -p ~/.buildozer/android/platform/android-sdk/tools/bin
-        mkdir -p ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin
-        
-        # Link existing GitHub Runner Android SDK to Buildozer path
-        ln -s $ANDROID_HOME/cmdline-tools/latest/* ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest/ || true
-        ln -s $ANDROID_HOME/cmdline-tools/latest/bin/* ~/.buildozer/android/platform/android-sdk/tools/bin/ || true
-        
-        # Auto-accept all Android SDK Licenses across system
+        mkdir -p ~/.android
+        touch ~/.android/repositories.cfg
         yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
     - name: Build APK with Buildozer
+      env:
+        ANDROIDSDK: ${{ env.ANDROID_HOME }}
+        ANDROIDNDK: ${{ env.ANDROID_HOME }}/ndk-bundle
       run: |
         buildozer -v android debug
 
