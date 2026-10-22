@@ -45,9 +45,6 @@ android.sdk = 33
 # (str) Android NDK version to use
 android.ndk = 25b
 
-# (str) Android build tools version to use
-android.build_tools_version = 33.0.2
-
 # (bool) Automatically accept SDK licenses
 android.accept_sdk_licenses = True
 
