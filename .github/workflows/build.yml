@@ -3,6 +3,7 @@ name: Build Android APK
 on:
   push:
     branches: [ main, master ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -26,18 +27,8 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y \
-            python3-pip \
-            git \
-            zip \
-            unzip \
-            autoconf \
-            libtool \
-            pkg-config \
-            zlib1g-dev \
-            libncurses5-dev \
-            libncursesw5-dev \
-            libffi-dev \
-            libssl-dev
+            python3-pip git zip unzip autoconf libtool pkg-config \
+            zlib1g-dev libncurses5-dev libncursesw5-dev libffi-dev libssl-dev
 
     - name: Install Buildozer & Cython
       run: |
@@ -45,13 +36,22 @@ jobs:
         pip install --upgrade cython==0.29.33
         pip install buildozer
 
-    - name: Pre-accept Android SDK Licenses
+    - name: Pre-setup Android Command-Line Tools
       run: |
-        mkdir -p ~/.android
-        touch ~/.android/repositories.cfg
-        mkdir -p ~/.buildozer/android/platform/android-sdk/licenses
-        printf "24333f8a637bba5aea4e50d45143093725f78a08\n89330172875f1086c15659006811741730d033b9\nd56f5185047cc741e80386829e0c093a49286d5f\n2473126251d8e0a9a300109d7328d5420d4f3a74" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
-        printf "84831b9409646a918e30573bab4c9c91346d8abd" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-preview-license
+        mkdir -p ~/.buildozer/android/platform/android-sdk/tools/bin
+        mkdir -p ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin
+        
+        # Download Android Command Line Tools
+        wget -q https://dl.google.com/android/repository/commandlinetools-linux-9441235_latest.zip -O commandlinetools.zip
+        unzip -q commandlinetools.zip
+        
+        # Structure directories so Buildozer finds sdkmanager in both old and new paths
+        mkdir -p ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest
+        cp -r cmdline-tools/* ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest/
+        cp -r cmdline-tools/bin/* ~/.buildozer/android/platform/android-sdk/tools/bin/ || true
+        
+        # Pre-accept all licenses
+        yes | ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --sdk_root=/home/runner/.buildozer/android/platform/android-sdk --licenses || true
 
     - name: Build APK with Buildozer
       run: |
